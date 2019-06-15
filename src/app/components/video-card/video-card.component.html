@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-image">
+    <figure class="image is-4by3 image-size">
+      <img
+      src="{{'https://image.tmdb.org/t/p/w500/' + data.poster_path }}"
+      alt="{{data.title}}">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content">
+        <p class="title is-5">
+          {{data.title}}
+        </p>
+        <a
+        class="subtitle is-6"
+        [routerLink]="['/video-details', data.id]">mais detalhes</a>
+      </div>
+    </div>
+  </div>
+</div>

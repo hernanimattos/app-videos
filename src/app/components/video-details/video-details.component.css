@@ -1,0 +1,13 @@
+.image-details{
+  max-width: 100%;
+}
+
+.detail-name{
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.tag-detail{
+  margin-right: 5px;
+  margin-left: 5px;
+}

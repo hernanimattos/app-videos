@@ -1,0 +1,57 @@
+<app-loading *ngIf="loading"></app-loading>
+
+<div class="container">
+  <div class="columns ">
+    <div class="column">
+      <form
+        [formGroup]="searchForm"
+        (ngSubmit)="setMovies()">
+
+          <div class="field is-grouped ">
+            <div class="control">
+              <input
+                (input)="onSearchChange($event.target.value)"
+                class="input"
+                type="text"
+                placeholder="Text input"
+                formControlName="query"
+              />
+            </div>
+            <div class="control">
+              <button class="button is-primary">Submit</button>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+
+  <app-no-results *ngIf="noResults"></app-no-results>
+
+  <div class="columns is-multiline ">
+    <div class="column is-one-quarter" *ngFor="let movie of movies">
+        <app-video-card [data]="movie"></app-video-card>
+    </div>
+  </div>
+
+  <div
+    class="columns"
+    *ngIf="hasPagination">
+
+    <nav
+      class="pagination"
+      role="navigation"
+      aria-label="pagination">
+
+      <ul class="pagination-list">
+        <li *ngFor="let button of pageButtons">
+          <a
+            class="pagination-link is-current" aria-label="Page 1"
+            aria-current="page"
+            (click)="changePage(button)">
+            {{button}}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

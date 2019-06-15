@@ -1,0 +1,46 @@
+<app-loading *ngIf="loading"></app-loading>
+<div class="container">
+  <div class="columns">
+    <div class="column is-2">
+      <figure class="image image-details">
+          <img src="{{'https://image.tmdb.org/t/p/w500/' + movie.poster_path}}" alt="Placeholder image">
+        </figure>
+    </div>
+
+    <div class="column">
+      <h2>
+        <span class="detail-name">Titulo:</span>
+        {{ movie.title }}
+      </h2>
+      <p>
+        <span class="detail-name">Título original:</span>
+        {{ movie.original_title }}
+      </p>
+      <p>
+        <span class="detail-name">Popularidade:</span>
+        {{ movie.popularity }}
+      </p>
+      <p>
+        <span class="detail-name">Genero:</span>
+        <span
+          class="tag is-primary tag-detail"
+          *ngFor="let genre of movie.genres">
+          {{ genre.name }}
+        </span>
+      </p>
+      <p>
+        <span class="detail-name">Idioma:</span>
+        {{movie.original_language}}
+      </p>
+      <p>
+        <span class="detail-name">Empresas prdutoras</span>
+        <span
+          class="tag is-primay tag-detail"
+          *ngFor="let companies of movie.production_companies">
+          {{ companies.name }}
+      </span>
+      </p>
+    </div>
+  </div>
+</div>
+
