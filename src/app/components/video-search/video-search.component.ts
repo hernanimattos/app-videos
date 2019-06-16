@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl , FormGroup } from '@angular/forms';
 import { VideosService } from '../../services/videos/videos.service';
+import { Button } from 'protractor';
 
 
 @Component({
@@ -14,6 +15,7 @@ export class VideoSearchComponent implements OnInit {
   private pageButtons: Array<any> = [];
   loading: Boolean = false;
   noResults: Boolean = false;
+  totalPages: Number;
 
   constructor(
     private videoService: VideosService
@@ -22,12 +24,15 @@ export class VideoSearchComponent implements OnInit {
 
   ngOnInit() {
   }
+
   searchForm = new FormGroup({
     query: new FormControl(''),
   });
 
   setMovies() {
     this.loading = true;
+    this.removeStorage('pages');
+
     const {
       query,
     } = this.searchForm.value;
@@ -55,13 +60,26 @@ export class VideoSearchComponent implements OnInit {
     this.putPageButtons(res);
   }
 
-
-  putPageButtons({total_pages}) {
+  putPageButtons({total_pages, page}) {
     this.pageButtons = [];
+    this.totalPages = total_pages;
     this.hasPagination = total_pages > 1 ? true : false;
 
-    for(let i = 1; i < total_pages; i++){
+    this.setLocalStorage('pages',
+      {
+        total_pages,
+        page,
+      }
+    );
+
+    for(let i = 0; i < total_pages; i++){
       this.pageButtons.push(i);
+    }
+  }
+
+  onSearchChange(value) {
+    if(!value){
+      this.noResults = false
     }
   }
 
@@ -80,9 +98,65 @@ export class VideoSearchComponent implements OnInit {
         return this.setResultMovies(res)
     });
   }
-  onSearchChange(value) {
-    if(!value){
-      this.noResults = false
+
+  backPage() {
+    const pages = this.getLocalStorage('pages');
+    let {
+      page: currentPage,
+      total_pages,
+    } = JSON.parse(pages);
+    const button = document.getElementsByClassName('pagination-next')[0];
+    button.removeAttribute('disabled');
+
+    if(currentPage <= 1) {
+
+      return;
+    };
+
+    currentPage = currentPage - 1;
+    this.setLocalStorage('pages',
+      {
+        total_pages,
+        page: currentPage,
+      }
+    );
+    this.changePage(currentPage);
+  }
+
+  nextPage() {
+    const pages = this.getLocalStorage('pages');
+    let {
+      page: currentPage,
+      total_pages,
+    } = JSON.parse(pages)
+
+    const button = document.getElementsByClassName('pagination-next')[0];
+
+    if(currentPage >= total_pages) {
+      button.setAttribute('disabled', 'true');
+      return;
     }
+
+    currentPage = currentPage + 1;
+    this.setLocalStorage('pages',
+      {
+        total_pages,
+        page: currentPage,
+      }
+    );
+    this.changePage(currentPage);
+  }
+
+  setLocalStorage(key, value) {
+    const parserValue = JSON.stringify(value)
+    localStorage.setItem(key, parserValue)
+  }
+
+  getLocalStorage(keyName) {
+    return localStorage.getItem(keyName);
+  }
+
+  removeStorage(keyName) {
+    return localStorage.removeItem(keyName);
   }
 }

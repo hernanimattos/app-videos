@@ -36,22 +36,18 @@
   <div
     class="columns"
     *ngIf="hasPagination">
-
-    <nav
-      class="pagination"
-      role="navigation"
-      aria-label="pagination">
-
-      <ul class="pagination-list">
-        <li *ngFor="let button of pageButtons">
-          <a
-            class="pagination-link is-current" aria-label="Page 1"
-            aria-current="page"
-            (click)="changePage(button)">
-            {{button}}
-          </a>
-        </li>
-      </ul>
+    <nav class="pagination" role="navigation" aria-label="pagination">
+      <button
+        class="pagination-previous"
+        title="This is the first page"
+        (click)=backPage()>
+        Previous
+      </button>
+      <button
+        class="pagination-next"
+        (click)=nextPage()>
+        Next page
+    </button>
     </nav>
   </div>
 </div>
